@@ -64,8 +64,13 @@
                                                     $ket = "DITERIMA";
                                                     $warna = "badge badge-success";
                                                 } else {
-                                                    $ket = "DITOLAJ";
-                                                    $warna = "badge badge-danger";
+                                                    if ($status == 3) {
+                                                        $ket = "DIKEMBALIKAN";
+                                                        $warna = "badge badge-dark";
+                                                    } else {
+                                                        $ket = "DITOLAK";
+                                                        $warna = "badge badge-danger";
+                                                    }
                                                 }
                                             }
                                             $no == $no++;
