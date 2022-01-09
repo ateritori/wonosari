@@ -60,15 +60,20 @@
                                                 $ket = "PROSES VERIFIKASI";
                                                 $warna = "badge badge-primary";
                                             } else {
-                                                $ket = "DITERIMA";
-                                                $warna = "badge badge-success";
+                                                if ($status == 2) {
+                                                    $ket = "DITERIMA";
+                                                    $warna = "badge badge-success";
+                                                } else {
+                                                    $ket = "DITOLAJ";
+                                                    $warna = "badge badge-danger";
+                                                }
                                             }
                                             $no == $no++;
                                             ?>
                                             <a href="#" class="<?= $warna ?>"><?= $ket ?></a>
                                         </td>
                                         </td>
-                                        <td><a href="#" class="badge badge-info">UBAH </a> | <a href="#" class="badge badge-danger">HAPUS</a></td>
+                                        <td><a href="#" class="badge badge-warning">UBAH </a> | <a href="#" class="badge badge-danger">HAPUS</a></td>
 
                                     <?php endforeach; ?>
                                     </tr>
