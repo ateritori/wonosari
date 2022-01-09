@@ -57,7 +57,7 @@
                                         <td><?= $tampilRt; ?></td>
                                         <td><?php $status = $usul['status'];
                                             if ($status == 1) {
-                                                $ket = "DITAMPUNG";
+                                                $ket = "PROSES VERIFIKASI";
                                                 $warna = "badge badge-primary";
                                             } else {
                                                 $ket = "DITERIMA";
@@ -68,7 +68,7 @@
                                             <a href="#" class="<?= $warna ?>"><?= $ket ?></a>
                                         </td>
                                         </td>
-                                        <td><a href="#" class="badge badge-info">Ubah </a> | <a href="#" class="badge badge-danger">Hapus</a></td>
+                                        <td><a href="#" class="badge badge-info">UBAH </a> | <a href="#" class="badge badge-danger">HAPUS</a></td>
 
                                     <?php endforeach; ?>
                                     </tr>
