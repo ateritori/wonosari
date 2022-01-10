@@ -13,17 +13,27 @@ class User extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' =>
         $this->session->userdata('userid')])->row_array();
 
-        $this->form_validation->set_rules('usulan', 'Usulan', 'trim|required');
+        $data['title'] = "Halaman User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/top_bar', $data);
+        $this->load->view('user/index', $data);
+        $this->load->view('templates/footer');
+    }
 
-        if ($this->form_validation->run() == false) {
-            $data['title'] = "Halaman User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/top_bar', $data);
-            $this->load->view('user/index', $data);
-            $this->load->view('templates/footer');
-        } else {
-            echo "Data Berhasil Disimpan";
-        }
+    public function tambah()
+    {
+        $uraian = $this->input->post('uraian');
+        $jumlah = $this->input->post('jumlah');
+        $panjang = $this->input->post('panjang');
+        $lebar = $this->input->post('lebar');
+        $tinggi = $this->input->post('tinggi');
+        $biaya = $this->input->post('biaya');
+
+        $kode_rt = $_SESSION['kode_rt'];
+        $kode_padukuhan = $_SESSION['kode_padukuhan'];
+
+        echo $kode_padukuhan;
+        echo $kode_rt;
     }
 }

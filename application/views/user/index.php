@@ -6,13 +6,18 @@
             <h5 class="m-0 font-weight-bold text-primary float-md-none">Data Usulan Program/ Pembangunan</h5>
         </div>
         <div class="card-body">
+            <!-- Button trigger modal -->
+            <a class="btn btn-primary sm" href="#" data-toggle="modal" data-target="#usulanModal">
+                Tambah Usulan
+            </a>
             <div class="table-responsive">
+                <?= form_error('uraian', '<div class="alert alert-danger" role="danger">', '</div>'); ?>
                 <table class="table table-hover" id="usulanTable" width="100%" cellspacing="0">
                     <tr style="text-align: center;">
                         <th>No</th>
                         <th style="width: 30%;">Usulan/ Program</th>
                         <th style="width: 9%;">Jumlah</th>
-                        <th style="width: 20%;">Volume (m)</th>
+                        <th style="width: 20%;">Dimensi/ Volume (m)</th>
                         <th>Biaya (Rp.) </th>
                         <th style="width: 14%;">Aksi</th>
                         <th>Status</th>
@@ -78,3 +83,44 @@
     <!-- /.container-fluid -->
 </div>
 <!-- End of Main Content -->
+
+<!-- tambah Modal -->
+<div class="modal fade" id="usulanModal" tabindex="-1" aria-labelledby="usulanModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="<?= base_url('user/tambah'); ?>" method="POST">
+            <?php
+            $_SESSION['kode_rt'] = $kode_rt;
+            $_SESSION['kode_padukuhan'] = $kode_padukuhan;
+            ?>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usulanModalLabel">Tambah Usulan</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-1">
+                        <label for="exampleInputUsulan" class="form-label">Usulan/ Program :</label>
+                        <input type="text" class="form-control" id="uraian" name="uraian">
+                    </div>
+                    <div class="mb-1">
+                        <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
+                        <input type="text" class="form-control" id="jumlah" name="jumlah">
+                    </div>
+                    <div class="mb-1">
+                        <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
+                        <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... ">
+                        <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... ">
+                        <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... ">
+                    </div>
+                    <div class="mb-1">
+                        <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
+                        <input type="text" class="form-control" id="biaya" name="biaya">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
