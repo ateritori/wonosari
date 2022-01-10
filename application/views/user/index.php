@@ -90,6 +90,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                             </td>
                             <td>
+
                                 <a href="#" data-toggle="modal" data-target="#statket" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
                             </td>
                         </tr>
