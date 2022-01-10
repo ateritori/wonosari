@@ -23,6 +23,8 @@ class User extends CI_Controller
 
     public function tambah()
     {
+        $masalah = $this->input->post('masalah');
+        $potensi = $this->input->post('potensi');
         $uraian = $this->input->post('uraian');
         $jumlah = $this->input->post('jumlah');
         $panjang = $this->input->post('panjang');
@@ -32,8 +34,32 @@ class User extends CI_Controller
 
         $kode_rt = $_SESSION['kode_rt'];
         $kode_padukuhan = $_SESSION['kode_padukuhan'];
+        $userid = $_SESSION['user'];
 
-        echo $kode_padukuhan;
-        echo $kode_rt;
+        $status = 1;
+
+        $data_usulan = array(
+            'masalah' => $masalah,
+            'potensi' => $potensi,
+            'usulan' => $uraian,
+            'jumlah' => $jumlah,
+            'panjang' => $panjang,
+            'lebar' => $lebar,
+            'tinggi' => $tinggi,
+            'biaya' => $biaya,
+            'user' => $userid,
+        );
+        $this->db->insert('usulan', $data_usulan);
+
+        $queryOlahusulan = "SELECT id from usulan ORDER BY ID DESC LIMIT 1";
+        $lastUsulan = $this->db->query($queryOlahusulan)->row_array();
+        $latest = $lastUsulan['id'];
+
+        $savelatest = array(
+            'kode_usulan' => $latest,
+        );
+
+        $this->db->insert('olah_usulan', $savelatest);
+        redirect('user/index', $userid);
     }
 }
