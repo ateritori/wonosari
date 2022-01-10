@@ -11,13 +11,14 @@
                     <tr style="text-align: center;">
                         <th>No</th>
                         <th style="width: 30%;">Usulan/ Program</th>
-                        <th>Jumlah</th>
+                        <th style="width: 9%;">Jumlah</th>
                         <th style="width: 20%;">Volume (m)</th>
                         <th>Biaya (Rp.) </th>
-                        <th>Aksi</th>
+                        <th style="width: 14%;">Aksi</th>
                         <th>Status</th>
                     </tr>
-                    <?php $no = 1;
+                    <?php
+                    $no = 1;
                     $userid = $user['id'];
                     $queryUsulan = "SELECT * from usulan WHERE user=$userid";
                     $usulan = $this->db->query($queryUsulan)->result_array();
@@ -31,6 +32,26 @@
                         $queryrt = "SELECT * from rt where id=$kode_rt";
                         $rt = $this->db->query($queryrt)->row_array();
                         $namart = $rt['rt'];
+
+                        $status = $usul['status'];
+                        if ($status == 1) :
+                            $ket = "VERIFIKASI";
+                            $gaya = "btn btn-info btn-sm";
+                            $dis = " ";
+                        elseif ($status == 2) :
+                            $ket = "DIKEMBALIKAN";
+                            $gaya = "btn btn-secondary btn-sm";
+                            $dis = " ";
+                        elseif ($status == 3) :
+                            $ket = "DITERIMA";
+                            $gaya = "btn btn-success btn-sm";
+                            $dis = "disabled";
+                        else :
+                            $ket = "DITOLAK";
+                            $gaya = "btn btn-danger btn-sm";
+                            $dis = " ";
+                        endif
+
                     ?>
                         <tr style="text-align: center;">
                             <td><?= $no ?></td>
@@ -39,10 +60,13 @@
                             <td>P : <?= $usul['panjang']; ?>| L : <?= $usul['lebar']; ?>
                                 | P : <?= $usul['tinggi']; ?> m</td>
                             <td><?= number_format($usul['biaya']); ?></td>
-                            <td><button type="submit" class="btn btn-warning btn-sm">Ubah</button>
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                            <td>
+                                <button type="submit" class="btn btn-warning btn-sm" <?= $dis; ?>>Ubah</button>
+                                <button type="submit" class="btn btn-danger btn-sm" <?= $dis; ?>>Hapus</button>
                             </td>
-                            <td>Diterima</td>
+                            <td>
+                                <button type="button" class="<?= $gaya; ?>"><?= $ket; ?></button>
+                            </td>
                         </tr>
                     <?php $no = $no + 1;
                     endforeach; ?>
