@@ -8,14 +8,14 @@
         <div class="card-body">
             <!-- Button trigger modal -->
             <a class="btn btn-primary sm" href="#" data-toggle="modal" data-target="#usulanModal">
-                <i class="fas fa-plus"> Tambah Usulan</i>
+                <span class="fas fa-plus"> Tambah Usulan</span>
             </a>
             <div class="table-responsive">
                 <?= form_error('uraian', '<div class="alert alert-danger" role="danger">', '</div>'); ?>
                 <table class="table table-hover" id="usulanTable" width="100%" cellspacing="0">
                     <tr style="text-align: center;">
                         <th>No</th>
-                        <th>Usulan/ Program</th>
+                        <th style="width: 35%;">Usulan/ Program</th>
                         <th>Jumlah</th>
                         <th>Dimensi/ Volume (m)</th>
                         <th>Biaya (Rp.) </th>
@@ -83,7 +83,7 @@
                             </td>
                             <td><?= $usul['jumlah']; ?> Paket</td>
                             <td>P : <?= $usul['panjang']; ?>| L : <?= $usul['lebar']; ?>
-                                | P : <?= $usul['tinggi']; ?> m</td>
+                                | P : <?= $usul['tinggi']; ?></td>
                             <td><?= number_format($usul['biaya']); ?></td>
                             <td>
                                 <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
