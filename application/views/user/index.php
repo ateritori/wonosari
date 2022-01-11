@@ -15,7 +15,7 @@
                 <table class="table table-hover" id="usulanTable" width="100%" cellspacing="0">
                     <tr style="text-align: center;">
                         <th>No</th>
-                        <th style="width: 35%;">Usulan/ Program</th>
+                        <th style="width: 30%;">Usulan/ Program</th>
                         <th>Jumlah</th>
                         <th>Dimensi/ Volume (m)</th>
                         <th>Biaya (Rp.) </th>
@@ -39,22 +39,16 @@
                     $rt = $this->db->query($queryrt)->row_array();
                     $nama_rt = $rt['rt'];
 
-
                     foreach ($usulan as $usul) :
-                        //kurang iki
-                        $masalah = $usul['masalah'];
-                        $potensi = $usul['potensi'];
+
                         $usulanid = $usul['id'];
 
-                        $querystat = "SELECT olah_usulan.status from olah_usulan JOIN usulan
+                        $querystat = "SELECT olah_usulan.id, olah_usulan.status, olah_usulan.ket from olah_usulan JOIN usulan
                         ON olah_usulan.kode_usulan = $usulanid";
                         $stat = $this->db->query($querystat)->row_array();
+                        $idolah = $stat['id'];
+                        $ketolah = $stat['ket'];
                         $status = $stat['status'];
-
-                        $queryket = "SELECT olah_usulan.ket from olah_usulan JOIN usulan
-                        ON olah_usulan.kode_usulan = $usulanid";
-                        $sket = $this->db->query($queryket)->row_array();
-                        $jelas = $sket['ket'];
 
 
                         if ($status == 1) :
@@ -83,14 +77,13 @@
                             </td>
                             <td><?= $usul['jumlah']; ?> Paket</td>
                             <td>P : <?= $usul['panjang']; ?>| L : <?= $usul['lebar']; ?>
-                                | P : <?= $usul['tinggi']; ?></td>
+                                | P : <?= $usul['tinggi']; ?> m</td>
                             <td><?= number_format($usul['biaya']); ?></td>
                             <td>
                                 <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                             </td>
                             <td>
-
                                 <a href="#" data-toggle="modal" data-target="#statket" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
                             </td>
                         </tr>
@@ -132,7 +125,7 @@
                                     <div class="modal-body">
                                         <?php
                                         echo "<b>Keterangan :</b><br>";
-                                        echo $jelas;
+                                        echo "";
                                         ?>
                                     </div>
                                     <div class="modal-footer">
