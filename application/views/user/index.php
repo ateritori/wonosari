@@ -8,25 +8,31 @@
         <div class="card-body">
             <!-- Button trigger modal -->
             <a class="btn btn-primary sm" href="#" data-toggle="modal" data-target="#usulanModal">
-                <span class="fas fa-plus"> Tambah Usulan</span>
+                <i class="fas fa-plus-square"></i>
+                Usulan
             </a>
             <div class="table-responsive">
-                <?= form_error('uraian', '<div class="alert alert-danger" role="danger">', '</div>'); ?>
-                <table class="table table-hover" id="usulanTable" width="100%" cellspacing="0">
-                    <tr style="text-align: center;">
-                        <th>No</th>
-                        <th style="width: 30%;">Usulan/ Program</th>
-                        <th>Jumlah</th>
-                        <th>Dimensi/ Volume (m)</th>
-                        <th>Biaya (Rp.) </th>
-                        <th>Aksi</th>
-                        <th>Status</th>
-                    </tr>
+                <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>No</th>
+                            <th style="width: 30%;">Usulan/ Program</th>
+                            <th>Jumlah</th>
+                            <th>Dimensi/ Volume (m)</th>
+                            <th>Biaya (Rp.) </th>
+                            <th>Aksi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
                     <?php
                     $no = 1;
 
                     $userid = $user['id'];
-                    $queryUsulan = "SELECT * from usulan WHERE user=$userid";
+                    $queryUsulan = "SELECT * from usulan JOIN olah_usulan 
+                                    ON usulan.id = olah_usulan.kode_usulan WHERE user=$userid 
+                                    AND aktif=1 ";
+
                     $usulan = $this->db->query($queryUsulan)->result_array();
 
                     $kode_padukuhan = $user['kode_padukuhan'];
@@ -41,16 +47,7 @@
 
                     foreach ($usulan as $usul) :
 
-                        $usulanid = $usul['id'];
-
-                        $querystat = "SELECT olah_usulan.id, olah_usulan.status, olah_usulan.ket from olah_usulan JOIN usulan
-                        ON olah_usulan.kode_usulan = $usulanid";
-                        $stat = $this->db->query($querystat)->row_array();
-                        $idolah = $stat['id'];
-                        $ketolah = $stat['ket'];
-                        $status = $stat['status'];
-
-
+                        $status = $usul['status'];
                         if ($status == 1) :
                             $keterangan = "VERIFIKASI";
                             $gaya = "btn btn-info btn-sm";
@@ -70,31 +67,35 @@
                         endif;
 
                     ?>
-                        <tr style="text-align: center;">
-                            <td><?= $no ?></td>
-                            <td style="text-align: justify;">
-                                <a href="#" data-toggle="modal" data-target="#maspo"><?= $usul['usulan']; ?></a>
-                            </td>
-                            <td><?= $usul['jumlah']; ?> Paket</td>
-                            <td>P : <?= $usul['panjang']; ?>| L : <?= $usul['lebar']; ?>
-                                | P : <?= $usul['tinggi']; ?> m</td>
-                            <td><?= number_format($usul['biaya']); ?></td>
-                            <td>
-                                <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                            <td>
-                                <a href="#" data-toggle="modal" data-target="#statket" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
-                            </td>
-                        </tr>
-                        <?php $no = $no + 1; ?>
 
+                        <tbody>
+                            <tr style="text-align: center;">
+                                <td><?= $no ?></td>
+                                <td style="text-align: justify;">
+                                    <?= $usul['usulan']; ?></a>
+                                </td>
+                                <td><?= $usul['jumlah']; ?> Paket</td>
+                                <td>P : <?= $usul['panjang']; ?>| L : <?= $usul['lebar']; ?>
+                                    | P : <?= $usul['tinggi']; ?> m</td>
+                                <td><?= number_format($usul['biaya']); ?></td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#maspo<?= $usul['id']; ?>"><i class="fas fa-info-circle"></i></button>
+                                    <button type="submit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editusul<?= $usul['id']; ?><?= $dis; ?>"><i class=" fas fa-edit"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm" <?= $dis; ?>><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#statket<?= $usul['id']; ?>" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <?php $no = $no + 1; ?>
                         <!-- Modal Masalah-Potensi -->
-                        <div class="modal fade" id="maspo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="maspoLabel" aria-hidden="true">
+                        <div class="modal fade" id="maspo<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="<?= $usul['id']; ?>Label" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="maspoLabel"><b><?= $usul['usulan']; ?></b></h5>
+                                        <h5 class="modal-title" id="<?= $usul['id']; ?>Label"><b><?= $usul['usulan']; ?></b></h5>
                                     </div>
                                     <div class="modal-body">
                                         <?php
@@ -102,10 +103,10 @@
                                         echo "Padukuhan : " . $nama_padukuhan . ", RT : " . $nama_rt . "<br>";
                                         echo "<hr>";
                                         echo "<b>Permasalahan :</b><br>";
-                                        echo $masalah . "<br>";
+                                        echo $usul['masalah'] . "<br>";
                                         echo "<hr>";
                                         echo "<b>Potensi yang dimiliki :</b><br>";
-                                        echo $potensi;
+                                        echo $usul['potensi'];
                                         ?>
                                     </div>
                                     <div class="modal-footer">
@@ -116,16 +117,16 @@
                         </div>
 
                         <!-- Modal Status -->
-                        <div class="modal fade" id="statket" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="statketLabel" aria-hidden="true">
+                        <div class="modal fade" id="statket<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="statketLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="statketLabel"><b><?= $keterangan; ?></b></h5>
+                                        <h5 class="modal-title" id="statketLabel"><b><?= $usul['usulan']; ?></b></h5>
                                     </div>
                                     <div class="modal-body">
                                         <?php
                                         echo "<b>Keterangan :</b><br>";
-                                        echo "";
+                                        echo $usul['ket'];
                                         ?>
                                     </div>
                                     <div class="modal-footer">
@@ -135,6 +136,57 @@
                             </div>
                         </div>
 
+                        <!-- Modal Edit -->
+                        <div class="modal fade" id="editusul<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editusulLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <?php
+                                $_SESSION['user'] = $userid;
+                                echo form_open_multipart('user/edit')
+                                ?>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="usulanModalLabel">Edit Usulan</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-1">
+                                            <label for="exampleInputMasalah" class="form-label">Permasalahan yang dihadapi :</label>
+                                            <input type="text" class="form-control" id="masalah" name="masalah" value="<?= $usul['masalah']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputPotensi" class="form-label">Potensi yang dimiliki :</label>
+                                            <input type="text" class="form-control" id="potensi" name="potensi" value="<?= $usul['potensi']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputUsulan" class="form-label">Usulan/ Program :</label>
+                                            <input type="text" class="form-control" id="uraian" name="uraian" value="<?= $usul['usulan']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
+                                            <input type="text" class="form-control" id="jumlah" name="jumlah" value="<?= $usul['jumlah']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
+                                            <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... " value="<?= $usul['panjang']; ?>">
+                                            <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... " value="<?= $usul['lebar']; ?>">
+                                            <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... " value="<?= $usul['tinggi']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
+                                            <input type="text" class="form-control" id="biaya" name="biaya" value="<?= $usul['biaya']; ?>">
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="exampleInputProposal" class="form-label">Unggah Proposal/ Dokumen Pendukung :</label>
+                                            <input type="file" class="form-control" id="proposal" name="proposal">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                                <?= form_close(); ?>
+                            </div>
+                        </div>
 
                     <?php endforeach; ?>
                     <div class="float-right">
@@ -151,51 +203,51 @@
 <!-- tambah Modal -->
 <div class="modal fade" id="usulanModal" tabindex="-1" aria-labelledby="usulanModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="<?= base_url('user/tambah'); ?>" method="POST">
-            <?php
-            $_SESSION['user'] = $userid;
-            ?>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="usulanModalLabel">Tambah Usulan</h5>
+        <?php
+        $_SESSION['user'] = $userid;
+        echo form_open_multipart('user/tambah')
+        ?>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usulanModalLabel">Tambah Usulan</h5>
+            </div>
+            <div class="modal-body">
+                <div class="mb-1">
+                    <label for="exampleInputMasalah" class="form-label">Permasalahan yang dihadapi :</label>
+                    <input type="text" class="form-control" id="masalah" name="masalah">
                 </div>
-                <div class="modal-body">
-                    <div class="mb-1">
-                        <label for="exampleInputMasalah" class="form-label">Permasalahan yang dihadapi :</label>
-                        <input type="text" class="form-control" id="masalah" name="masalah">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputPotensi" class="form-label">Potensi yang dimiliki :</label>
-                        <input type="text" class="form-control" id="potensi" name="potensi">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputUsulan" class="form-label">Usulan/ Program :</label>
-                        <input type="text" class="form-control" id="uraian" name="uraian">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
-                        <input type="text" class="form-control" id="jumlah" name="jumlah">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
-                        <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... ">
-                        <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... ">
-                        <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... ">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
-                        <input type="text" class="form-control" id="biaya" name="biaya">
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleInputProposal" class="form-label">Unggah Proposal/ Dokumen Pendukung :</label>
-                        <input type="file" class="form-control" id="proposal" name="proposal">
-                    </div>
+                <div class="mb-1">
+                    <label for="exampleInputPotensi" class="form-label">Potensi yang dimiliki :</label>
+                    <input type="text" class="form-control" id="potensi" name="potensi">
                 </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                <div class="mb-1">
+                    <label for="exampleInputUsulan" class="form-label">Usulan/ Program :</label>
+                    <input type="text" class="form-control" id="uraian" name="uraian">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
+                    <input type="text" class="form-control" id="jumlah" name="jumlah">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
+                    <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... ">
+                    <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... ">
+                    <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... ">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
+                    <input type="text" class="form-control" id="biaya" name="biaya">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputProposal" class="form-label">Unggah Proposal/ Dokumen Pendukung :</label>
+                    <input type="file" class="form-control" id="proposal" name="proposal">
                 </div>
             </div>
-        </form>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </div>
+        <?= form_close(); ?>
     </div>
 </div>
