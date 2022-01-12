@@ -81,7 +81,7 @@
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#maspo<?= $usul['id']; ?>"><i class="fas fa-info-circle"></i></button>
                                     <button type="submit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editusul<?= $usul['id']; ?><?= $dis; ?>"><i class=" fas fa-edit"></i></button>
-                                    <button type="submit" class="btn btn-danger btn-sm" <?= $dis; ?>><i class="fas fa-trash-alt"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapususul<?= $usul['id']; ?><?= $dis; ?>"><i class=" fas fa-trash-alt"></i></button>
                                 </td>
                                 <td>
                                     <a href="#" data-toggle="modal" data-target="#statket<?= $usul['id']; ?>" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
@@ -140,14 +140,14 @@
                         <div class="modal fade" id="editusul<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editusulLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <?php
-                                $_SESSION['user'] = $userid;
-                                echo form_open_multipart('user/edit')
+                                echo form_open_multipart('user/edit');
                                 ?>
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="usulanModalLabel">Edit Usulan</h5>
                                     </div>
                                     <div class="modal-body">
+                                        <input type="hidden" class="form-control" id="idusulan" name="idusulan" value="<?= $usul['id']; ?>">
                                         <div class="mb-1">
                                             <label for="exampleInputMasalah" class="form-label">Permasalahan yang dihadapi :</label>
                                             <input type="text" class="form-control" id="masalah" name="masalah" value="<?= $usul['masalah']; ?>">
@@ -188,6 +188,29 @@
                             </div>
                         </div>
 
+                        <!-- Modal Hapus Usulan -->
+                        <div class="modal fade" id="hapususul<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="hapususulLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="hapususulLabel"><b>HAPUS USULAN </b></h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+                                        echo "<b>Yakin akan Menghapus Data Usulan : </b><br>" . $usul['usulan'];
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form method="POST" action="<?= base_url('user/hapus'); ?>">
+                                            <input type="hidden" class="form-control" id="idusulan" name="idusulan" value="<?= $usul['id']; ?>">
+                                            <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Tutup</a>
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     <?php endforeach; ?>
                     <div class="float-right">
                         <h5>Padukuhan : <?= $nama_padukuhan; ?> | RT : <?= $nama_rt; ?> </h5>
@@ -204,7 +227,6 @@
 <div class="modal fade" id="usulanModal" tabindex="-1" aria-labelledby="usulanModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <?php
-        $_SESSION['user'] = $userid;
         echo form_open_multipart('user/tambah')
         ?>
         <div class="modal-content">

@@ -50,11 +50,7 @@ class User extends CI_Controller
 
         endif;
 
-        $kode_rt = $_SESSION['kode_rt'];
-        $kode_padukuhan = $_SESSION['kode_padukuhan'];
         $userid = $_SESSION['user'];
-
-        $status = 1;
 
         $data_usulan = array(
             'masalah' => $masalah,
@@ -85,6 +81,7 @@ class User extends CI_Controller
 
     public function edit()
     {
+        $idusulan = $this->input->post('idusulan');
         $masalah = $this->input->post('masalah');
         $potensi = $this->input->post('potensi');
         $uraian = $this->input->post('uraian');
@@ -96,8 +93,9 @@ class User extends CI_Controller
         $proposal = $_FILES['proposal'];
 
         if ($proposal = '') :
+        else :
             $config['upload_path']          = './assets/file';
-            $config['allowed_types']        = 'pdf|docx|rtf';
+            $config['allowed_types']        = 'pdf|docx|dox|xls|xlsx|rtf|jpg|jpeg|png';
             $config['max_size']             = 100;
 
             $this->load->library('upload', $config);
@@ -108,43 +106,34 @@ class User extends CI_Controller
             else :
                 $proposal = $this->upload->data('file_name');
             endif;
-        else :
+
         endif;
 
-        $kode_rt = $_SESSION['kode_rt'];
-        $kode_padukuhan = $_SESSION['kode_padukuhan'];
-        $userid = $_SESSION['user'];
+        $this->db->set('masalah', $masalah);
+        $this->db->set('potensi', $potensi);
+        $this->db->set('usulan', $uraian);
+        $this->db->set('jumlah', $jumlah);
+        $this->db->set('panjang', $panjang);
+        $this->db->set('lebar', $lebar);
+        $this->db->set('tinggi', $tinggi);
+        $this->db->set('biaya', $biaya);
+        $this->db->set('file', $proposal);
 
-        $status = 1;
+        $this->db->where('id', $idusulan);
+        $this->db->update('usulan');
 
-        $dataeditusul = array(
-            'masalah' => $masalah,
-            'potensi' => $potensi,
-            'usulan' => $uraian,
-            'jumlah' => $jumlah,
-            'panjang' => $panjang,
-            'lebar' => $lebar,
-            'tinggi' => $tinggi,
-            'biaya' => $biaya,
-            'user' => $userid,
-            'file' => $proposal,
-        );
+        redirect('user/index', $userid);
+    }
 
-        $where = array('id' => $userid);
-        $this->db->where($where);
-        $this->db->update('usulan', $dataeditusul);
+    public function hapus()
+    {
+        $idusulan = $this->input->post('idusulan');
 
-        $queryOlahusulan = "SELECT id from usulan ORDER BY ID DESC LIMIT 1";
-        $lastUsulan = $this->db->query($queryOlahusulan)->row_array();
-        $latest = $lastUsulan['id'];
+        $this->db->set('aktif', 0);
 
-        $savelatest = array(
-            'kode_usulan' => $latest,
-        );
+        $this->db->where('id', $idusulan);
+        $this->db->update('usulan');
 
-        $where = array('id' => $userid);
-        $this->db->where($where);
-        $this->db->update('olah_usulan', $savelatest);
         redirect('user/index', $userid);
     }
 }
