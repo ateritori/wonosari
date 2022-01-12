@@ -11,6 +11,8 @@
                 <i class="fas fa-plus-square"></i>
                 Usulan
             </a>
+
+            <?= $this->session->flashdata('message'); ?>
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -80,8 +82,8 @@
                                 <td><?= number_format($usul['biaya']); ?></td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#maspo<?= $usul['id']; ?>"><i class="fas fa-info-circle"></i></button>
-                                    <button type="submit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editusul<?= $usul['id']; ?><?= $dis; ?>"><i class=" fas fa-edit"></i></button>
-                                    <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapususul<?= $usul['id']; ?><?= $dis; ?>"><i class=" fas fa-trash-alt"></i></button>
+                                    <button type="submit" <?= $dis; ?> class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editusul<?= $usul['id']; ?>"><i class=" fas fa-edit"></i></button>
+                                    <button type="submit" <?= $dis; ?> class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapususul<?= $usul['id']; ?>"><i class=" fas fa-trash-alt"></i></button>
                                 </td>
                                 <td>
                                     <a href="#" data-toggle="modal" data-target="#statket<?= $usul['id']; ?>" class="<?= $gaya; ?>" <?= $dis; ?>><?= $keterangan; ?></a>
@@ -89,7 +91,8 @@
                             </tr>
                         </tbody>
 
-                        <?php $no = $no + 1; ?>
+                        <?php $no++; ?>
+
                         <!-- Modal Masalah-Potensi -->
                         <div class="modal fade" id="maspo<?= $usul['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="<?= $usul['id']; ?>Label" aria-hidden="true">
                             <div class="modal-dialog">
@@ -227,7 +230,9 @@
 <div class="modal fade" id="usulanModal" tabindex="-1" aria-labelledby="usulanModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <?php
+        $_SESSION['user'] = $userid;
         echo form_open_multipart('user/tambah')
+
         ?>
         <div class="modal-content">
             <div class="modal-header">

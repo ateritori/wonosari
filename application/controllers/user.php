@@ -23,6 +23,22 @@ class User extends CI_Controller
 
     public function tambah()
     {
+        $this->form_validation->set_rules('masalah', 'Masalah', 'required');
+        $this->form_validation->set_rules('potensi', 'Potensi', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
+        $this->form_validation->set_rules('biaya', 'Biaya', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('user/index');
+        } else {
+            $this->_tambah();
+        }
+    }
+
+    private function _tambah()
+    {
         $masalah = $this->input->post('masalah');
         $potensi = $this->input->post('potensi');
         $uraian = $this->input->post('uraian');
@@ -42,7 +58,8 @@ class User extends CI_Controller
             $this->load->library('upload', $config);
 
             if (!$this->upload->do_upload('proposal')) :
-                echo "Upload Proposal/ Dokumen Pendukung <b>GAGAL</b>";
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Proposal Harus Diisi</strong>');
+                redirect('user/index');
                 die;
             else :
                 $proposal = $this->upload->data('file_name');
@@ -81,6 +98,21 @@ class User extends CI_Controller
 
     public function edit()
     {
+        $this->form_validation->set_rules('masalah', 'Masalah', 'required');
+        $this->form_validation->set_rules('potensi', 'Potensi', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
+        $this->form_validation->set_rules('biaya', 'Biaya', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('user/index');
+        } else {
+            $this->_edit();
+        }
+    }
+    private function _edit()
+    {
         $idusulan = $this->input->post('idusulan');
         $masalah = $this->input->post('masalah');
         $potensi = $this->input->post('potensi');
@@ -95,19 +127,22 @@ class User extends CI_Controller
         if ($proposal = '') :
         else :
             $config['upload_path']          = './assets/file';
-            $config['allowed_types']        = 'pdf|docx|dox|xls|xlsx|rtf|jpg|jpeg|png';
+            $config['allowed_types']        = 'pdf|docx|xlsx|doc|xls|rtf|jpg|jpeg|png';
             $config['max_size']             = 100;
 
             $this->load->library('upload', $config);
 
             if (!$this->upload->do_upload('proposal')) :
-                echo "Upload Proposal/ Dokumen Pendukung <b>GAGAL</b>";
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Proposal Harus Diisi</strong>');
+                redirect('user/index');
                 die;
             else :
                 $proposal = $this->upload->data('file_name');
             endif;
 
         endif;
+
+        $userid = $_SESSION['user'];
 
         $this->db->set('masalah', $masalah);
         $this->db->set('potensi', $potensi);
@@ -122,18 +157,20 @@ class User extends CI_Controller
         $this->db->where('id', $idusulan);
         $this->db->update('usulan');
 
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Diubah</strong>');
         redirect('user/index', $userid);
     }
 
     public function hapus()
     {
         $idusulan = $this->input->post('idusulan');
+        $userid = $_SESSION['user'];
 
         $this->db->set('aktif', 0);
-
         $this->db->where('id', $idusulan);
         $this->db->update('usulan');
 
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Dihapus</strong>');
         redirect('user/index', $userid);
     }
 }
