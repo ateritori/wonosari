@@ -24,7 +24,118 @@ class Admin extends CI_Controller
 
     public function simpan()
     {
-        $this->form_validation->set_rules('ketusul', 'Ketusul', 'required');
+        $this->form_validation->set_rules('ketproses', 'Ketproses', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('admin/index');
+        } else {
+            $this->_simpan();
+        }
+    }
+    private function _simpan()
+    {
+        $idusulan = $this->input->post('idusulan');
+        $ketproses = $this->input->post('ketproses');
+        $proses = $this->input->post('proses');
+
+        $this->db->set('status', $proses);
+        $this->db->set('ket', $ketproses);
+        $this->db->where('id', $idusulan);
+        $this->db->update('olah_usulan');
+
+        $this->db->set('status_verifikasi', 0);
+        $this->db->where('id', $idusulan);
+        $this->db->update('usulan');
+
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Proses Berhasil Disimpan</strong>');
+        redirect('admin/index');
+    }
+
+    public function tambah()
+    {
+        $this->form_validation->set_rules('masalah', 'Masalah', 'required');
+        $this->form_validation->set_rules('potensi', 'Potensi', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
+        $this->form_validation->set_rules('biaya', 'Biaya', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('admin/index');
+        } else {
+            $this->_tambah();
+        }
+    }
+
+    private function _tambah()
+    {
+        $masalah = $this->input->post('masalah');
+        $potensi = $this->input->post('potensi');
+        $uraian = $this->input->post('uraian');
+        $jumlah = $this->input->post('jumlah');
+        $panjang = $this->input->post('panjang');
+        $lebar = $this->input->post('lebar');
+        $tinggi = $this->input->post('tinggi');
+        $biaya = $this->input->post('biaya');
+        $proposal = $_FILES['proposal'];
+
+        if ($proposal = '') :
+        else :
+            $config['upload_path']          = './assets/file';
+            $config['allowed_types']        = 'pdf|doc|docx';
+            $config['max_size']             = 1024;
+
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload('proposal')) :
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Proposal Harus Diisi</strong>');
+                redirect('admin/index');
+                die;
+            else :
+                $proposal = $this->upload->data('file_name');
+            endif;
+
+        endif;
+
+        $userid = $_SESSION['user'];
+
+        $data_usulan = array(
+            'masalah' => $masalah,
+            'potensi' => $potensi,
+            'usulan' => $uraian,
+            'jumlah' => $jumlah,
+            'panjang' => $panjang,
+            'lebar' => $lebar,
+            'tinggi' => $tinggi,
+            'biaya' => $biaya,
+            'user' => $userid,
+            'file' => $proposal,
+            'status_verifikasi' => 1,
+        );
+
+        $this->db->insert('usulan', $data_usulan);
+
+        $queryOlahusulan = "SELECT id from usulan ORDER BY ID DESC LIMIT 1";
+        $lastUsulan = $this->db->query($queryOlahusulan)->row_array();
+        $latest = $lastUsulan['id'];
+
+        $savelatest = array(
+            'kode_usulan' => $latest,
+        );
+
+        $this->db->insert('olah_usulan', $savelatest);
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Ditambah</strong>');
+        redirect('admin/index', $userid);
+    }
+
+    public function edit()
+    {
+        $this->form_validation->set_rules('masalah', 'Masalah', 'required');
+        $this->form_validation->set_rules('potensi', 'Potensi', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
+        $this->form_validation->set_rules('biaya', 'Biaya', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
@@ -36,19 +147,69 @@ class Admin extends CI_Controller
     private function _edit()
     {
         $idusulan = $this->input->post('idusulan');
-        $ketusul = $this->input->post('ketusul');
-        $proses = $this->input->post('proses');
+        $masalah = $this->input->post('masalah');
+        $potensi = $this->input->post('potensi');
+        $uraian = $this->input->post('uraian');
+        $jumlah = $this->input->post('jumlah');
+        $panjang = $this->input->post('panjang');
+        $lebar = $this->input->post('lebar');
+        $tinggi = $this->input->post('tinggi');
+        $biaya = $this->input->post('biaya');
+        $proposal = $_FILES['proposal'];
 
-        $this->db->set('status', $proses);
-        $this->db->set('ket', $ketusul);
-        $this->db->where('id', $idusulan);
-        $this->db->update('olah_usulan');
+        $userid = $_SESSION['user'];
 
-        $this->db->set('status_verifikasi', 0);
+        $upload_file = $_FILES['proposal']['name'];
+
+        if ($upload_file) {
+            $config['upload_path']          = './assets/file';
+            $config['allowed_types']        = 'pdf|doc|docx';
+            $config['max_size']             = 1024;
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('proposal')) {
+                $new_file = $this->upload->data('file_name');
+                $this->db->set('file', $new_file);
+            } else {
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert">Upload Foto Gagal, Hanya boleh file (pdf/word) berekstensi : pdf/doc/docx maksimal 1Mb</strong>');
+                redirect('admin/index', $userid);
+            }
+        }
+
+
+        $this->db->set('masalah', $masalah);
+        $this->db->set('potensi', $potensi);
+        $this->db->set('usulan', $uraian);
+        $this->db->set('jumlah', $jumlah);
+        $this->db->set('panjang', $panjang);
+        $this->db->set('lebar', $lebar);
+        $this->db->set('tinggi', $tinggi);
+        $this->db->set('biaya', $biaya);
+        $this->db->set('status_verifikasi', 1);
+
         $this->db->where('id', $idusulan);
         $this->db->update('usulan');
 
-        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Proses Berhasil Disimpan</strong>');
-        redirect('admin/index');
+        $this->db->set('status', 1);
+
+        $this->db->where('id', $idusulan);
+        $this->db->update('olah_usulan');
+
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Diubah</strong>');
+        redirect('admin/index', $userid);
+    }
+
+    public function hapus()
+    {
+        $idusulan = $this->input->post('idusulan');
+        $userid = $_SESSION['user'];
+
+        $this->db->set('aktif', 0);
+        $this->db->where('id', $idusulan);
+        $this->db->update('usulan');
+
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Dihapus</strong>');
+        redirect('admin/index', $userid);
     }
 }
