@@ -5,7 +5,7 @@
     <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-2 static-top shadow">
 
             <div class="d-flex flex-column">
                 <b><img src="<?= base_url('assets/'); ?>img/gadungmlati.png" alt="" width=" 47" height="47">&nbsp;&nbsp;&nbsp;SISTEM PERENCANAAN PEMBANGUNAN KALURAHAN - WONOSARI</b>
