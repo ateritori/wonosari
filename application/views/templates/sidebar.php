@@ -75,11 +75,10 @@
 
      <!-- Nav Item - Pages Collapse Menu -->
 
-     <!-- Nav Item - Charts -->
      <li class="nav-item">
-         <a class="nav-link" href="#">
+         <a class="nav-link" href="<?= base_url('bantuan'); ?>">
              <i class="fas fa-question-circle"></i>
-             <span>Help</span></a>
+             <span>Bantuan</span></a>
      </li>
 
      <!-- Nav Item - Tables -->

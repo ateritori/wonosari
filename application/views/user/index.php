@@ -7,9 +7,11 @@
         </div>
         <div class="card-body">
             <!-- Button trigger modal -->
-            <a class="btn btn-primary sm" href="#" data-toggle="modal" data-target="#usulanModal">
-                <i class="fas fa-plus-square"></i>
-                Usulan
+            <a class="btn btn-primary btn-icon-split" href="#" data-toggle="modal" data-target="#usulanModal">
+                <span class="icon text-white-40">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Usulan</span>
             </a>
 
             <?= $this->session->flashdata('message'); ?>
@@ -164,18 +166,18 @@
                                             <input type="text" class="form-control" id="uraian" name="uraian" value="<?= $usul['usulan']; ?>">
                                         </div>
                                         <div class="mb-1">
-                                            <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
-                                            <input type="text" class="form-control" id="jumlah" name="jumlah" value="<?= $usul['jumlah']; ?>">
+                                            <label for="exampleInputJumlah" class="form-label">Jumlah Paket/ Titik Usulan/ Program :</label>
+                                            <input type="number" class="form-control" id="jumlah" name="jumlah" value="<?= $usul['jumlah']; ?>">
                                         </div>
                                         <div class="mb-1">
                                             <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
-                                            <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... " value="<?= $usul['panjang']; ?>">
-                                            <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... " value="<?= $usul['lebar']; ?>">
-                                            <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... " value="<?= $usul['tinggi']; ?>">
+                                            <input type="number" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... " value="<?= $usul['panjang']; ?>">
+                                            <input type="number" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... " value="<?= $usul['lebar']; ?>">
+                                            <input type="number" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... " value="<?= $usul['tinggi']; ?>">
                                         </div>
                                         <div class="mb-1">
                                             <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
-                                            <input type="text" class="form-control" id="biaya" name="biaya" value="<?= $usul['biaya']; ?>">
+                                            <input type="number" class="form-control" id="biaya" name="biaya" value="<?= $usul['biaya']; ?>">
                                         </div>
                                         <div class="mb-1">
                                             <label for="exampleInputProposal" class="form-label">Unggah Proposal/ Dokumen Pendukung :</label>
