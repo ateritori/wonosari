@@ -1,8 +1,8 @@
  <!-- Sidebar -->
  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
      <?php
-        $role_id = $this->session->userdata('role_id');
-        if ($role_id == 1) {
+        $jenis = $this->session->userdata('jenis');
+        if ($jenis == 1) {
             $beranda = "admin";
         } else {
             $beranda = "user";
@@ -11,7 +11,7 @@
         $queryMenu = "SELECT `user_menu`.`id`, `menu`
         FROM `user_menu` JOIN `user_access_menu`
         ON `user_menu`.`id` = `user_access_menu`.`menu_id`
-        WHERE  `user_access_menu`.`role_id` = $role_id
+        WHERE  `user_access_menu`.`role_id` = $jenis
         ORDER BY `user_access_menu`.`id`
         ";
 

@@ -6,6 +6,7 @@ class User extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        is_login();
     }
 
     public function index()
@@ -52,8 +53,8 @@ class User extends CI_Controller
         if ($proposal = '') :
         else :
             $config['upload_path']          = './assets/file';
-            $config['allowed_types']        = 'pdf|docx|rtf';
-            $config['max_size']             = 1000;
+            $config['allowed_types']        = 'pdf|doc|docx';
+            $config['max_size']             = 1024;
 
             $this->load->library('upload', $config);
 
@@ -80,6 +81,7 @@ class User extends CI_Controller
             'biaya' => $biaya,
             'user' => $userid,
             'file' => $proposal,
+            'status_verifikasi' => 1,
         );
 
         $this->db->insert('usulan', $data_usulan);
@@ -125,25 +127,26 @@ class User extends CI_Controller
         $biaya = $this->input->post('biaya');
         $proposal = $_FILES['proposal'];
 
-        if ($proposal = '') :
-        else :
+        $userid = $_SESSION['user'];
+
+        $upload_file = $_FILES['proposal']['name'];
+
+        if ($upload_file) {
             $config['upload_path']          = './assets/file';
-            $config['allowed_types']        = 'pdf|docx|xlsx|doc|xls|rtf|jpg|jpeg|png';
-            $config['max_size']             = 100;
+            $config['allowed_types']        = 'pdf|doc|docx';
+            $config['max_size']             = 1024;
 
             $this->load->library('upload', $config);
 
-            if (!$this->upload->do_upload('proposal')) :
-                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Proposal Harus Diisi</strong>');
-                redirect('user/index');
-                die;
-            else :
-                $proposal = $this->upload->data('file_name');
-            endif;
+            if ($this->upload->do_upload('proposal')) {
+                $new_file = $this->upload->data('file_name');
+                $this->db->set('file', $new_file);
+            } else {
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert">Upload Foto Gagal, Hanya boleh file (pdf/word) berekstensi : pdf/doc/docx maksimal 1Mb</strong>');
+                redirect('user/index', $userid);
+            }
+        }
 
-        endif;
-
-        $userid = $_SESSION['user'];
 
         $this->db->set('masalah', $masalah);
         $this->db->set('potensi', $potensi);
@@ -153,10 +156,15 @@ class User extends CI_Controller
         $this->db->set('lebar', $lebar);
         $this->db->set('tinggi', $tinggi);
         $this->db->set('biaya', $biaya);
-        $this->db->set('file', $proposal);
+        $this->db->set('status_verifikasi', 1);
 
         $this->db->where('id', $idusulan);
         $this->db->update('usulan');
+
+        $this->db->set('status', 1);
+
+        $this->db->where('id', $idusulan);
+        $this->db->update('olah_usulan');
 
         $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Diubah</strong>');
         redirect('user/index', $userid);

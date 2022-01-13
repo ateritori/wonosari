@@ -7,17 +7,22 @@
             <h5 class="m-0 font-weight-bold text-primary " style="text-align: left;">Kontak Developer :</h5>
             <table class="no-border">
                 <tr>
-                    <td style="width: 55%;"><span class="fab fa-whatsapp"></span> WhatsApp/ Telegram</td>
+                    <td style="width: 50%;"><span class="fab fa-whatsapp"></span> WhatsApp</td>
                     <td> : </td>
-                    <td style="padding-left: 10pt;"><b>0822-2316-3779</b></td>
+                    <td style="padding-left: 10pt;"><b>0822-2316-3759</b></td>
                 </tr>
                 <tr>
-                    <td style="width: 55%;"><span class="far fa-envelope"></span> Email</td>
+                    <td style="width: 50%;"><span class="fab fa-telegram"></span> Telegram</td>
+                    <td> : </td>
+                    <td style="padding-left: 10pt;"><b>0822-2316-3759</b></td>
+                </tr>
+                <tr>
+                    <td style="width: 50%;"><span class="far fa-envelope"></span> Email</td>
                     <td> : </td>
                     <td style="padding-left: 10pt;"><b>ateritori@gmail.com</b></td>
                 </tr>
                 <tr>
-                    <td style="width: 55%;"><span class="fab fa-instagram"></span> Instagram
+                    <td style="width: 50%;"><span class="fab fa-instagram"></span> Instagram
                     <td> : </td>
                     <td style="padding-left: 10pt;"><b>@ateritori</b></td>
                 </tr>

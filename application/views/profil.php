@@ -61,7 +61,7 @@
                         <td style="width: 150pt;">Foto</td>
                         <td> : </td>
                         <td style="padding-left: 10pt;">
-                            <img class="img-thumbnail" src="<?= base_url('assets/img/') . $user['foto']; ?>" style="width: 100px">
+                            <img src="<?= base_url('assets/img/') . $user['foto']; ?>" style="width: 150px">
                         </td>
                     </tr>
                     <tr>
@@ -89,14 +89,14 @@
                 <h5 class="modal-title" id="profilanModalLabel">Edit Profil</h5>
             </div>
             <div class="modal-body">
-                <input type="hidden" class="form-control" id="idUser" name="idUser" value="<?= $user['id']; ?>">
+                <input type="hidden" class="form-control" id="iduser" name="iduser" value="<?= $user['id']; ?>">
                 <div class="mb-1">
-                    <label for="exampleInputMasalah" class="form-label">Nama User:</label>
-                    <input type="text" class="form-control" id="masalah" name="masalah" value="<?= $user['nama']; ?>">
+                    <label for="exampleInputNamauser" class="form-label">Nama User:</label>
+                    <input type="text" class="form-control" id="namauser" name="namauser" value="<?= $user['nama']; ?>">
                 </div>
                 <div class="mb-1">
-                    <label for="exampleInputMasalah" class="form-label">Foto User:</label>
-                    <input type="file" class="form-control" id="foto" name="foto" value="<?= $user['foto']; ?>">
+                    <label for="foto" class="form-label">Foto :</label>
+                    <input type="file" class="form-control" id="foto" name="foto">
                 </div>
 
             </div>
