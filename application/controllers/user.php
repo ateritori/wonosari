@@ -53,7 +53,7 @@ class User extends CI_Controller
         else :
             $config['upload_path']          = './assets/file';
             $config['allowed_types']        = 'pdf|docx|rtf';
-            $config['max_size']             = 100;
+            $config['max_size']             = 1000;
 
             $this->load->library('upload', $config);
 
@@ -93,6 +93,7 @@ class User extends CI_Controller
         );
 
         $this->db->insert('olah_usulan', $savelatest);
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Ditambah</strong>');
         redirect('user/index', $userid);
     }
 

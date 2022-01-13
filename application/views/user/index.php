@@ -241,29 +241,29 @@
             <div class="modal-body">
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Permasalahan yang dihadapi :</label>
-                    <input type="text" class="form-control" id="masalah" name="masalah">
+                    <textarea class="form-control" id="masalah" name="masalah"> </textarea>
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputPotensi" class="form-label">Potensi yang dimiliki :</label>
-                    <input type="text" class="form-control" id="potensi" name="potensi">
+                    <textarea type="text" class="form-control" id="potensi" name="potensi"></textarea>
                 </div>
                 <div class="mb-1">
-                    <label for="exampleInputUsulan" class="form-label">Usulan/ Program :</label>
-                    <input type="text" class="form-control" id="uraian" name="uraian">
+                    <label for="exampleInputUsulan" class="form-label">Usulan/ Gagasan/ Program :</label>
+                    <textarea class="form-control" id="uraian" name="uraian"></textarea>
                 </div>
                 <div class="mb-1">
-                    <label for="exampleInputJumlah" class="form-label">Jumlah Paket Program :</label>
-                    <input type="text" class="form-control" id="jumlah" name="jumlah">
+                    <label for="exampleInputJumlah" class="form-label">Jumlah Paket / Titik Usulan :</label>
+                    <input type="number" class="form-control" id="jumlah" name="jumlah" maxlength="11">
                 </div>
                 <div class="mb-1">
-                    <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume (m) :</label>
-                    <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Panjang ... ">
-                    <input type="text" class="form-control" id="lebar" name="lebar" placeholder="Lebar ... ">
-                    <input type="text" class="form-control" id="tinggi" name="tinggi" placeholder="Tinggi ... ">
+                    <label for="exampleInputDimensi" class="form-label">Dimensi/ Volume : </label>
+                    <input type="number" class="form-control" id="panjang" name="panjang" maxlength="11" placeholder="Panjang (cm)/ Jumlah Peserta (orang) ... ">
+                    <input type="number" class="form-control" id="lebar" name="lebar" maxlength="11" placeholder="Lebar (cm) ... ">
+                    <input type="number" class="form-control" id="tinggi" name="tinggi" maxlength="11" placeholder="Tinggi (cm) ... ">
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputBiaya" class="form-label">Biaya (Rp.) :</label>
-                    <input type="text" class="form-control" id="biaya" name="biaya">
+                    <input type="number" class="form-control" id="biaya" name="biaya" maxlength="11">
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputProposal" class="form-label">Unggah Proposal/ Dokumen Pendukung :</label>
