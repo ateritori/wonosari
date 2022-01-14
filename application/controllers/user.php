@@ -18,7 +18,7 @@ class User extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/top_bar', $data);
-        $this->load->view('user/index', $data);
+        $this->load->view('user/usulan', $data);
         $this->load->view('templates/footer');
     }
 
@@ -181,5 +181,18 @@ class User extends CI_Controller
 
         $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Usulan Berhasil Dihapus</strong>');
         redirect('user/index', $userid);
+    }
+
+    public function usulan()
+    {
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('userid')])->row_array();
+
+        $data['title'] = "Halaman User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/top_bar', $data);
+        $this->load->view('user/usulan', $data);
+        $this->load->view('templates/footer');
     }
 }

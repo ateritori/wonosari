@@ -71,6 +71,10 @@ class Auth extends CI_Controller
 
     public function block()
     {
-        echo 'akses terlarang';
+        $data['title'] = "403 - Forbidden Access";
+        $this->load->view('templates/header');
+        $this->load->view('templates/sidebar');
+        $this->load->view('auth/block');
+        $this->load->view('templates/footer');
     }
 }

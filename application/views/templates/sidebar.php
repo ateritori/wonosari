@@ -25,16 +25,6 @@
          <div class="sidebar-brand-text mx-3">Dashboard</div>
      </a>
 
-     <!-- Divider -->
-     <hr class="sidebar-divider">
-     <!-- Nav Item - Dashboard -->
-
-     <div class="sidebar-heading">Beranda</div>
-     <li class="nav-item">
-         <a class="nav-link" href="<?= base_url($beranda); ?>">
-             <i class="fas fa-table"></i>
-             <span>Data Usulan</span></a>
-     </li>
 
      <hr class="sidebar-divider">
 
@@ -55,12 +45,11 @@
             ?>
 
          <?php foreach ($subMenu as $sm) : ?>
-             <li class="nav-item" active>
+             <li class="nav-item">
                  <a class="nav-link" href="<?= base_url($sm['url']); ?>">
                      <i class="<?= $sm['icon']; ?>"></i>
                      <span><?= $sm['judul']; ?></span></a>
              </li>
-
          <?php endforeach; ?>
          <hr class="sidebar-divider">
      <?php endforeach; ?>
