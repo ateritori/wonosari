@@ -7,6 +7,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         is_login();
+        date_default_timezone_set('Asia/Jakarta');
     }
 
     public function index()
@@ -14,7 +15,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' =>
         $this->session->userdata('userid')])->row_array();
 
-        $data['title'] = "Halaman Admin - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
+        $data['title'] = "Proses Usulan - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/top_bar', $data);
@@ -218,7 +219,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' =>
         $this->session->userdata('userid')])->row_array();
 
-        $data['title'] = "Halaman Admin - Manajemen User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
+        $data['title'] = "Manajemen User - Manajemen User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/top_bar', $data);
@@ -286,7 +287,7 @@ class Admin extends CI_Controller
             'kode_padukuhan' => $lembaga,
             'kode_rt' => $sublembaga,
             'aktif' => 1,
-            'dibuat' => date('d, m, Y'),
+            'dibuat' => date('d-m-Y H:i:s'),
             'foto' => $foto,
         );
 

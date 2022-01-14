@@ -6,15 +6,6 @@
             <h5 class="m-0 font-weight-bold text-primary " style="text-align: center;">PROSES USULAN PROGRAM/ PEMBANGUNAN</h5>
         </div>
         <div class="card-body">
-            <!-- Button trigger modal -->
-            <a class="btn btn-primary btn-icon-split" href="#" data-toggle="modal" data-target="#usulanModal">
-                <span class="icon text-white-40">
-                    <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">Usulan</span>
-            </a>
-            <?= $this->session->flashdata('message'); ?>
-            <br><br>
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>

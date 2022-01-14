@@ -4,12 +4,17 @@
             <h5 class="m-0 font-weight-bold text-primary " style="text-align: center;">HALAMAN PROFIL</h5>
         </div>
         <div class="card-body">
-
             <a class="btn btn-primary btn-icon-split" href="#" data-toggle="modal" data-target="#editProfil<?= $user['id']; ?>">
                 <span class="icon text-white-40">
                     <i class="fas fa-edit"></i>
                 </span>
-                <span class="text">Edit Profil</span>
+                <span class="text">Ubah Profil</span>
+            </a>
+            <a class="btn btn-info btn-icon-split" href="#" data-toggle="modal" data-target="#editpassword<?= $user['id']; ?>">
+                <span class="icon text-white-40">
+                    <i class="fas fa-edit"></i>
+                </span>
+                <span class="text">Ubah Password</span>
             </a>
             <?= $this->session->flashdata('message'); ?>
             <br><br>
@@ -48,19 +53,24 @@
                         <td style="padding-left: 10pt;"><?= $user['nama']; ?> </td>
                     </tr>
                     <tr>
-                        <td style="width: 150pt;">Jenis User</td>
+                        <td style="width: 150pt;">Level User</td>
                         <td> : </td>
                         <td style="padding-left: 10pt;"><?= $nama_jenis; ?> </td>
                     </tr>
                     <tr>
-                        <td style="width: 150pt;">Padukuhan/ Kalurahan</td>
+                        <td style="width: 150pt;">Lembaga / Padukuhan</td>
                         <td> : </td>
                         <td style="padding-left: 10pt;"><?= $nama_padukuhan; ?> </td>
                     </tr>
                     <tr>
-                        <td style="width: 150pt;">RT</td>
+                        <td style="width: 150pt;">Sub-lembaga /     RT</td>
                         <td> : </td>
                         <td style="padding-left: 10pt;"><?= $nama_rt; ?> </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 150pt;">Diperbaharui</td>
+                        <td> : </td>
+                        <td style="padding-left: 10pt;"><?= $user['dibuat']; ?> </td>
                     </tr>
                     <tr>
                         <td style="width: 150pt;">Foto</td>
@@ -69,31 +79,21 @@
                             <img src="<?= base_url('assets/img/') . $user['foto']; ?>" style="width: 150px">
                         </td>
                     </tr>
-                    <tr>
-                        <td style="width: 150pt;"></td>
-                        <td></td>
-                        <td style="padding-left: 10pt;">
-
-                        </td>
-                    </tr>
                 </table>
             </div>
         </div>
     </div>
 </div>
-</div>
 
 <!-- Modal Edit Profil-->
 <div class="modal fade" id="editProfil<?= $user['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editProfilLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <?php
-        echo form_open_multipart('profil/edit');
-        ?>
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="profilanModalLabel">Edit Profil</h5>
+                <h5 class="modal-title" id="profilanModalLabel">Ubah Profil</h5>
             </div>
             <div class="modal-body">
+            <?php echo form_open_multipart('user/editprofil');?>
                 <input type="hidden" class="form-control" id="iduser" name="iduser" value="<?= $user['id']; ?>">
                 <div class="mb-1">
                     <label for="exampleInputNamauser" class="form-label">Nama User:</label>
@@ -107,13 +107,43 @@
                     <label for="foto" class="form-label">Foto :</label>
                     <input type="file" class="form-control" id="foto" name="foto">
                 </div>
-
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>
+            <?= form_close(); ?>
         </div>
-        <?= form_close(); ?>
     </div>
+</div>
+
+<!-- Modal Edit Password-->
+<div class="modal fade" id="editpassword<?= $user['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editProfilLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profilanModalLabel">Ubah Password</h5>
+            </div>
+            <form method="POST" action="<?= base_url('user/ubahpassword'); ?>">
+            <div class="modal-body">            
+                <input type="hidden" class="form-control" id="iduser" name="iduser" value="<?= $user['id']; ?>">
+                <div class="mb-1">
+                    <label for="exampleInputNamauser" class="form-label">Password Lama:</label>
+                    <input type="password" class="form-control" id="passwordlama" name="passwordlama">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputNamauser" class="form-label">Password Baru:</label>
+                    <input type="password" class="form-control" id="passwordbaru1" name="passwordbaru1" placeholder="Isi Password Baru ...">                
+                    <input type="password" class="form-control" id="passwordbaru2" name="passwordbaru2" placeholder="Ulangi Isi Password Baru ...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </div>

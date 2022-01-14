@@ -45,6 +45,7 @@
             ?>
 
          <?php foreach ($subMenu as $sm) : ?>
+
              <li class="nav-item">
                  <a class="nav-link" href="<?= base_url($sm['url']); ?>">
                      <i class="<?= $sm['icon']; ?>"></i>
