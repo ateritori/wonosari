@@ -96,7 +96,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Proses Usulan</h5>
+                                        <h5 class="modal-title"><b>Proses Usulan</b></h5>
                                     </div>
                                     <form method="POST" action="<?= base_url('admin/simpan'); ?>">
                                         <div class="modal-body">
@@ -168,7 +168,7 @@
                                 ?>
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="usulanModalLabel">Edit Usulan</h5>
+                                        <h5 class="modal-title" id="usulanModalLabel"><b>Edit Usulan</b></h5>
                                     </div>
                                     <div class="modal-body">
                                         <input type="hidden" class="form-control" id="idusulan" name="idusulan" value="<?= $usul['id']; ?>">
@@ -217,7 +217,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="hapususulLabel"><b>HAPUS USULAN </b></h5>
+                                        <h5 class="modal-title" id="hapususulLabel"><b>Hapus Usulan </b></h5>
                                     </div>
                                     <div class="modal-body">
                                         <?php
@@ -294,4 +294,5 @@
         </div>
         <?= form_close(); ?>
     </div>
+</div>
 </div>

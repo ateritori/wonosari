@@ -218,11 +218,11 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' =>
         $this->session->userdata('userid')])->row_array();
 
-        $data['title'] = "Halaman User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
+        $data['title'] = "Halaman Admin - Manajemen User - Sistem  Perencanaan Pembangunan Kalurahan Wonosari";
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/top_bar', $data);
-        $this->load->view('admin/user', $data);
+        $this->load->view('admin/manage_user', $data);
         $this->load->view('templates/footer');
     }
 }
