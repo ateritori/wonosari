@@ -38,6 +38,11 @@
                         <td style="padding-left: 10pt;"><?= $user['id']; ?> </td>
                     </tr>
                     <tr>
+                        <td style="width: 150pt;">Username</td>
+                        <td> : </td>
+                        <td style="padding-left: 10pt;"><?= $user['username']; ?> </td>
+                    </tr>
+                    <tr>
                         <td style="width: 150pt;">Nama User</td>
                         <td> : </td>
                         <td style="padding-left: 10pt;"><?= $user['nama']; ?> </td>
@@ -93,6 +98,10 @@
                 <div class="mb-1">
                     <label for="exampleInputNamauser" class="form-label">Nama User:</label>
                     <input type="text" class="form-control" id="namauser" name="namauser" value="<?= $user['nama']; ?>">
+                </div>
+                <div class="mb-1">
+                    <label for="exampleInputNamauser" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" value="<?= $user['username']; ?>">
                 </div>
                 <div class="mb-1">
                     <label for="foto" class="form-label">Foto :</label>

@@ -13,10 +13,10 @@
                                         <img src="<?= base_url('assets/'); ?>img/gadungmlati.png" alt="" width=" 72" height="57">
                                         <h1 class=" h4 text-gray-900 mb-4">Login<br>Sistem Perencanaan Kalurahan<br>Kalurahan Wonosari </h1>
                                     </div>
+                                    <?= $this->session->flashdata('message'); ?>
                                     <form class="user" method="POST" action="<?= base_url('Auth'); ?>">
-                                        <?= $this->session->flashdata('message'); ?>
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="userid" name="userid" placeholder="Userid" value="<?= set_value('userid') ?>">
+                                            <input type="text" class="form-control form-control-user" id="userid" name="userid" placeholder="Username" value="<?= set_value('userid') ?>">
                                             <?= form_error('userid', '<small class="text-danger pl-3">', '</small>'); ?>
                                         </div>
                                         <div class="form-group">

@@ -37,6 +37,8 @@ class profil extends CI_Controller
     {
         $iduser = $this->input->post('iduser');
         $namauser = $this->input->post('namauser');
+        $username = $this->input->post('username');
+        $jenis = $this->input->post('jenis');
 
         $upload_image = $_FILES['foto']['name'];
 
@@ -56,11 +58,24 @@ class profil extends CI_Controller
             }
         }
 
+        $cek_username = $this->db->get_where('user', ['id' => $iduser])->row_array();
+        $dtusername = $cek_username['username'];
+        
+        if($dtusername == $username) :
+            $redir = "profil/index";
+            $ucap = '<strong class="alert alert-success" role="alert"> Data Profil Berhasil Diubah </strong>';
+        else:
+            $this->db->set('username', $username);
+            $ucap = '<div class="alert alert-success" role="alert">Data Username Berhasil Diubah, Silakan Login untuk Melanjutkan</div>';
+            $redir = "auth";
+        endif;
+
+
         $this->db->set('nama', $namauser);
         $this->db->where('id', $iduser);
         $this->db->update('user');
 
-        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data Profil Berhasil Diubah</strong>');
-        redirect('profil/index', $iduser);
+        $this->session->set_flashdata('message', $ucap);
+        redirect($redir, $iduser);
     }
 }

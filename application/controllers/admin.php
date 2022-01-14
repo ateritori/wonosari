@@ -225,4 +225,73 @@ class Admin extends CI_Controller
         $this->load->view('admin/manage_user', $data);
         $this->load->view('templates/footer');
     }
+
+    public function tambahuser()
+    {
+        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('password1', 'Password1', 'required');
+        $this->form_validation->set_rules('password2', 'Password2', 'required');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('admin/user');
+        } else {
+            $this->_tambahuser();
+        }
+    }
+
+    private function _tambahuser()
+    {
+        $userid = $this->input->post('userid');
+        $username = $this->input->post('username');
+        $password1 = $this->input->post('password1');
+        $password2 = $this->input->post('password2');
+        $nama = $this->input->post('nama');
+        $level = $this->input->post('level');
+        $lembaga = $this->input->post('lembaga');
+        $sublembaga = $this->input->post('sublembaga');
+        $foto = $_FILES['foto'];
+
+        if($password1 == $password2):
+            $password = password_hash($password2, PASSWORD_BCRYPT);
+        else:
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Password 1 harus sama dengan Password 2</strong>');
+                redirect('admin/user');
+        endif;
+
+        if ($foto = '') :
+        else :
+            $config['upload_path']          = './assets/img';
+            $config['allowed_types']        = 'jpg|gif|png';
+            $config['max_size']             = 1024;
+
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload('foto')) :
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Foto Harus Diisi</strong>');
+                redirect('admin/user');
+                die;
+            else :
+                $foto = $this->upload->data('file_name');
+            endif;
+
+        endif;
+
+        $data_user = array(
+            'nama' => $nama,
+            'username' => $username,
+            'password' => $password,
+            'jenis' => $level,
+            'kode_padukuhan' => $lembaga,
+            'kode_rt' => $sublembaga,
+            'aktif' => 1,
+            'dibuat' => date('d, m, Y'),
+            'foto' => $foto,
+        );
+
+        $this->db->insert('user', $data_user);
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data User Berhasil Ditambah</strong>');
+        redirect('admin/user', $userid);
+    }
 }

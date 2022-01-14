@@ -186,19 +186,20 @@
 <div class="modal fade" id="tambahuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="<?= $usr['id']; ?>Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo form_open_multipart('admin/edituser'); ?>
+            <?php echo form_open_multipart('admin/tambahuser'); ?>
             <div class="modal-header">
                 <h5 class="modal-title"><b>Tambah User</b></h5>
             </div>
             <div class="modal-body">
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Username :</label>
+                    <input type="hidden" class="form-control" id="userid" name="userid">
                     <input type="text" class="form-control" id="username" name="username">
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Password :</label>
-                    <input type="text" class="form-control" id="password1" name="password1" placeholder="Ketik Password ...">
-                    <input type="text" class="form-control" id="password2" name="password2" placeholder="Ulangi Ketik Password ...">
+                    <input type="password" class="form-control" id="password1" name="password1" placeholder="Ketik Password ...">
+                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Ulangi Ketik Password ...">
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Nama Lengkap User :</label>
@@ -206,14 +207,14 @@
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Level User :</label>
-                    <select class="form-control">
+                    <select class="form-control" id="level" name="level">
                         <option value="1">Admin Kalurahan</option>
                         <option value="2">Admin RT</option>
                     </select>
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Lembaga/ Padukuhan :</label>
-                    <select class="form-control">
+                    <select class="form-control" id="lembaga" name="lembaga">
                         <option value="1">Madusari</option>
                         <option value="2">Ringinsari</option>
                         <option value="3">Purbosari</option>
@@ -226,7 +227,7 @@
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputMasalah" class="form-label">Sub-Lembaga/ RT :</label>
-                    <select class="form-control">
+                    <select class="form-control" id="sublembaga" name="sublembaga">
                         <option value="1">001</option>
                         <option value="2">002</option>
                         <option value="3">003</option>
@@ -247,12 +248,12 @@
                 </div>
                 <div class="mb-1">
                     <label for="exampleInputProposal" class="form-label">Foto :</label>
-                    <input type="file" class="form-control" id="proposal" name="proposal">
+                    <input type="file" class="form-control" id="foto" name="foto">
                 </div>
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="close">Batal</a>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
             <?= form_close(); ?>
         </div>
