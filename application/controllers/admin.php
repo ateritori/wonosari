@@ -156,7 +156,6 @@ class Admin extends CI_Controller
         $lebar = $this->input->post('lebar');
         $tinggi = $this->input->post('tinggi');
         $biaya = $this->input->post('biaya');
-        $proposal = $_FILES['proposal'];
 
         $userid = $_SESSION['user'];
 
@@ -254,11 +253,11 @@ class Admin extends CI_Controller
         $sublembaga = $this->input->post('sublembaga');
         $foto = $_FILES['foto'];
 
-        if($password1 == $password2):
+        if ($password1 == $password2) :
             $password = password_hash($password2, PASSWORD_BCRYPT);
-        else:
+        else :
             $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Password 1 harus sama dengan Password 2</strong>');
-                redirect('admin/user');
+            redirect('admin/user');
         endif;
 
         if ($foto = '') :
@@ -293,6 +292,92 @@ class Admin extends CI_Controller
 
         $this->db->insert('user', $data_user);
         $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data User Berhasil Ditambah</strong>');
+        redirect('admin/user', $userid);
+    }
+
+    public function edituser()
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+        $this->form_validation->set_rules('level', 'Level', 'required');
+        $this->form_validation->set_rules('lembaga', 'Lembaga', 'required');
+        $this->form_validation->set_rules('sublembaga', 'sublembaga', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert"> Semua Form Wajib Diisi</strong>');
+            redirect('admin/user');
+        } else {
+            $this->_edituser();
+        }
+    }
+
+    private function _edituser()
+    {
+        $userid = $this->input->post('userid');
+        $username = $this->input->post('username');
+        $password1 = $this->input->post('password1');
+        $password2 = $this->input->post('password2');
+        $nama = $this->input->post('nama');
+        $jenis = $this->input->post('level');
+        $lembaga = $this->input->post('lembaga');
+        $sublembaga = $this->input->post('sublembaga');
+        $aktif = $this->input->post('aktif');
+        $foto = $_FILES['foto']['name'];
+
+        if ($foto) {
+            $config['upload_path']          = './assets/img/';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 1024;
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('foto')) {
+                $new_foto = $this->upload->data('file_name');
+                $this->db->set('foto', $new_foto);
+            } else {
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert">Upload Foto Gagal, Hanya boleh file : gif/jpg/png maksimal 1Mb</strong>');
+                redirect('admin/user', $userid);
+            }
+        }
+
+        if (($password1 == '') or ($password2 == '')) :
+
+        else :
+            if ($password1 == $password2) :
+                $password = password_hash($password2, PASSWORD_BCRYPT);
+                $this->db->set('password', $password);
+            else :
+                $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert">Password Tidak Sama/strong>');
+                redirect('admin/user', $userid);
+            endif;
+        endif;
+
+
+        $this->db->set('nama', $nama);
+        $this->db->set('username', $username);
+        $this->db->set('jenis', $jenis);
+        $this->db->set('kode_padukuhan', $lembaga);
+        $this->db->set('kode_rt', $sublembaga);
+        $this->db->set('aktif', $aktif);
+        $this->db->set('dibuat', date('d-m-Y H:i:s'));
+
+        $this->db->where('id', $userid);
+        $this->db->update('user');
+
+        $this->session->set_flashdata('message', '<strong class="alert alert-success" role="alert">Data User Berhasil Diubah</strong>');
+        redirect('admin/user', $userid);
+    }
+
+    public function hapususer()
+    {
+        $userid = $this->input->post('iduser');
+
+        $this->db->set('aktif', 0);
+        $this->db->set('dibuat', date('d-m-Y H:i:s'));
+
+        $this->db->where('id', $userid);
+        $this->db->update('user');
+
+        $this->session->set_flashdata('message', '<strong class="alert alert-danger" role="alert">Data User Berhasil Di Non-Aktifkan</strong>');
         redirect('admin/user', $userid);
     }
 }
