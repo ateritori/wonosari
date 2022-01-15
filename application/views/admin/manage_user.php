@@ -29,11 +29,15 @@
                     </thead>
 
                     <?php
-                    $no = 1;
-
                     $userid = $user['id'];
-                    $queryuser = "SELECT * from user";
-                    $user = $this->db->query($queryuser)->result_array();
+
+                    $config['base_url'] = base_url('admin/user');
+                    $config['total_rows'] = $this->db->get('user')->num_rows();
+                    $config['per_page'] = 3;
+                    $this->pagination->initialize($config);
+                    $start = $this->uri->segment(3);
+
+                    $user = $this->db->get('user', $config['per_page'], $start)->result_array();
                     foreach ($user as $usr) :
 
                         $kode_padukuhan = $usr['kode_padukuhan'];
@@ -50,7 +54,7 @@
 
                         <tbody>
                             <tr style="text-align: center;">
-                                <td><?= $no ?></td>
+                                <td><?= ++$start ?></td>
                                 <td style="text-align: justify;">
                                     <?= $usr['nama']; ?></a>
                                 </td>
@@ -247,11 +251,10 @@
                                 </div>
                             </div>
 
-                        <?php $no++;
-                    endforeach;
-                        ?>
+                        <?php endforeach; ?>
                         </tbody>
                 </table>
+                Halaman : <?= $this->pagination->create_links(); ?>
             </div>
         </div>
     </div>
