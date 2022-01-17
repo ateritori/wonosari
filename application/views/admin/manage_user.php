@@ -19,7 +19,7 @@
                     <thead>
                         <tr style="text-align: center;">
                             <th>No</th>
-                            <th style="width: 20%;">Nama</th>
+                            <th style="width: 30%;">Nama</th>
                             <th>Lembaga</th>
                             <th>Sub-Lembaga</th>
                             <th>Status</th>
@@ -33,7 +33,7 @@
 
                     $config['base_url'] = base_url('admin/user');
                     $config['total_rows'] = $this->db->get('user')->num_rows();
-                    $config['per_page'] = 3;
+                    $config['per_page'] = 5;
                     $this->pagination->initialize($config);
                     $start = $this->uri->segment(3);
 
